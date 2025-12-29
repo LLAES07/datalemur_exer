@@ -34,3 +34,63 @@ Write a query to return the IDs of the Facebook pages that have zero likes. The 
 |156|20001|07/25/2022 00:00:00|
 
 
+
+```sql
+
+SELECT
+  p1.page_id -- Agrupamos por page_id y no hay necesidad de DISTINCT por el left join
+FROM
+  pages p1
+LEFT JOIN  -- Generamos un outer join en este caso para poder tener todas las ids de pages y en caso que aparezca vacio a la derecha eso quiere decir que la pagina no tiene like
+  page_likes  p2
+ON  
+  p1.page_id = p2.page_id -- utilizamos page_id para poder cruzar ambas tablas
+WHERE
+  p2.liked_date IS NULL -- Filtramos por aquellos registros donde no existe un registro de un me gusta
+ORDER BY 
+  page_id; -- Ordenamos por page_id
+  
+
+```
+
+""Está bien, ya sabemos cuáles tienen cero likes. Ahora quiero que me des un reporte de todas las páginas, pero con una columna extra llamada popularidad.""
+
+Si la página tiene más de 1 like, ponle 'Popular'.
+
+Si tiene exactamente 1 like, ponle 'Emergente'.
+
+Si tiene 0 likes, ponle 'Inactiva'.
+
+Ordena el resultado por las más populares primero."
+
+```sql
+
+
+WITH likes_counter AS (
+SELECT
+  p1.page_id,
+  page_name,
+  COUNT(liked_date) AS total_likes
+FROM
+  pages p1
+LEFT JOIN 
+  page_likes  p2
+ON  
+  p1.page_id = p2.page_id
+  
+GROUP BY  
+  p1.page_id,
+  page_name)
+  
+
+SELECT
+  page_id,
+  page_name,
+  CASE 
+    WHEN total_likes > 1 THEN 'Popular'
+    WHEN total_likes = 1 THEN 'Emergente'
+    ELSE 'Inactiva'
+  END AS Popularidad
+FROM
+  likes_counter;
+```
