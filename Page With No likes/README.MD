@@ -65,7 +65,7 @@ Ordena el resultado por las más populares primero."
 
 ```sql
 
-
+-- tabla  donde contamos los likes totales
 WITH likes_counter AS (
 SELECT
   p1.page_id,
@@ -82,7 +82,7 @@ GROUP BY
   p1.page_id,
   page_name)
   
-
+-- utiliamos la tabla anterior pra poder generar la columna nueva
 SELECT
   page_id,
   page_name,
