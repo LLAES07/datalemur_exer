@@ -22,3 +22,28 @@ In other words, group the users by the number of tweets they posted in 2022 and 
 |846402|111|Following @NickSinghTech on Twitter changed my life!|02/14/2022 00:00:00|
 |241425|254|If the salary is so competitive why won’t you tell me what it is?|03/01/2022 00:00:00|
 |231574|148|I no longer have a manager. I can't be managed|03/23/2022 00:00:00|
+
+
+```sql
+
+SELECT
+    -- Genera la cuenta de usuarios por los buckets
+    tweets_counter AS tweet_bucket,
+    COUNT(user_id) AS user_num
+
+FROM (
+-- Cuenta la cantidad de tweets por ususario en 2022
+        SELECT
+            user_id,
+            COUNT(tweet_id) AS tweet_count
+        FROM
+            tweets
+        
+        WHERE tweet_date >= '2022-01-01' AND tweet_date < '2023-01-01'
+        GROUP BY
+            user_id ) AS tweets_counter
+
+GROUP BY
+    tweets_counter
+
+```
