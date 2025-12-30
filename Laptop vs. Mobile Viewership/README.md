@@ -19,6 +19,16 @@ _Effective 15 April 2023, the solution has been updated with a more concise and 
 
 ```sql
 
+SELECT 
+    -- Calculamos el total de vistas por laptops. Cuando ve laptop deja un 1 y se suman terminando
+  SUM(CASE 
+    WHEN device_type = 'laptop' THEN 1 END) AS laptop_views,
+
+    -- Calculamos el total de vistas por tablet y telefono
+  SUM(CASE 
+    WHEN device_type IN ('phone', 'tablet') THEN 1 END) AS mobile_views  
+    
+FROM viewership;
 
 
 ```
