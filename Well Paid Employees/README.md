@@ -27,3 +27,18 @@ As a HR Analyst, you're asked to identify all employees who earn more than their
 
 
 # Respuesta
+
+```sql
+SELECT 
+  e1.employee_id,
+  e1.name
+FROM employee  e1
+-- self join de la misma tabla para trtar la izquierda usarla como trabajadores y la derecha como managers
+INNER JOIN 
+  employee e2
+ON 
+
+  e1.manager_id = e2.employee_id
+WHERE 
+    1.salary > e2.salary;
+```
