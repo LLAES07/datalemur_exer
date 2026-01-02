@@ -25,5 +25,19 @@ p.s. If you've read the [Ace the Data Science Interview](https://www.amazon.com
 
 ```sql
 
+SELECT 
+  user_id,
+  -- Selecciona los días entre la fecha mas recienta a la menos reciente
+  EXTRACT(DAY FROM (MAX(post_date) - MIN(post_date))) AS dias  
 
+FROM posts
+WHERE
+    -- Filtra todos los datos del 2021
+  EXTRACT(YEAR FROM post_date) ='2021'
+GROUP BY 
+  user_id
+HAVING
+    -- Asegura que los datos sean de aquellos usuarios con 2 o mas datos
+  COUNT(post_id) >=2
+  
 ```
