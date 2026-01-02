@@ -41,10 +41,11 @@ FROM (
         company_id
     FROM job_listings
     GROUP BY company_id, title
-    HAVING COUNT(*)>=2 -- Si la cuenta es igual a 2 es porque tiene duplicado un trabajo
+    HAVING COUNT(*)>1 -- Si la cuenta es mayor que 1  es porque tiene duplicado un trabajo
     
     ) AS t1
 
 ```
 
 
+"Encuentra el department_id y el conteo de empleados que ganan más que su manager, pero solo para los departamentos que tengan más de 2 empleados en esa situación."
