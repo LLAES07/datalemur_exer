@@ -22,3 +22,27 @@ Assumption:
 | 902            | 4500          | 3601            | Only if you're buying   | 08/03/2022 00:00:00 |
 | 743            | 3601          | 8752            | Let's take this offline | 06/14/2022 00:00:00 |
 | 922            | 3601          | 4500            | Get on the call         | 08/10/2022 00:00:00 |
+
+
+# RESPUESTA
+
+
+```sql
+
+SELECT
+    -- Selecciona y cuenta la cantidad de mensajes por ususarios
+  sender_id,
+  COUNT(DISTINCT message_id)
+FROM messages
+WHERE 
+    -- Filtra solamente los datos de agosto del 2022
+  sent_date BETWEEN '2022-08-01' AND '2022-08-31'
+GROUP BY
+  sender_id
+ORDER BY 
+    -- Ordena de mayor a menor segun la cuenta de los mensajes
+  2 DESC
+    -- Filtra el top 2
+LIMIT 2;
+
+```
