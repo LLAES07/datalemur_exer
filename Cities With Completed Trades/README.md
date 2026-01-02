@@ -35,3 +35,34 @@ Write a query to retrieve the top three cities that have the highest number of c
 |city|string|
 |email|string|
 |signup_date|datetime|
+
+
+# Respuesta
+
+
+```sql
+SELECT 
+    -- Cuenta la cantidad de ordenes por ciudad
+  u.city,
+  count(*) as total_orders
+FROM trades t
+INNER JOIN 
+    -- Genera un inner join entre la tabla trades y users para poder tener las ciudades
+  users u 
+  ON 
+    t.user_id = u.user_id
+WHERE
+    -- Filtra solo las ordenes que fueron completadas
+  status='Completed'
+GROUP BY
+    -- Agrupa por ciudad
+  city 
+ORDER BY
+    -- Ordena de mayor a menor por la cantidad de ordenes
+  2 DESC
+    -- Limita para ver las tres primeras
+LIMIT 3;
+
+
+```
+
