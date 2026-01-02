@@ -24,3 +24,27 @@ Definition:
 |945|345|Data Analyst|Data analyst reviews data to identify key insights into a business's customers and ways the data can be used to solve problems.|
 |164|345|Data Analyst|Data analyst reviews data to identify key insights into a business's customers and ways the data can be used to solve problems.|
 |172|244|Data Engineer|Data engineer works in a variety of settings to build systems that collect, manage, and convert raw data into usable information for data scientists and business analysts to interpret.|
+
+
+
+# Respuesta
+
+
+```sql
+SELECT
+    -- Query exterior que cuenta la cantidad de empresa donde existe el mismo trabajo más de una vez
+  COUNT(company_id) AS duplicate_companies
+
+FROM (
+    -- Query para encontrar las compañias que tienen un tipo de trabajo mas de una vez 
+    SELECT 
+        company_id
+    FROM job_listings
+    GROUP BY company_id, title
+    HAVING COUNT(*)>=2 -- Si la cuenta es igual a 2 es porque tiene duplicado un trabajo
+    
+    ) AS t1
+
+```
+
+
