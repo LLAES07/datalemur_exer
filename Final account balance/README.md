@@ -18,3 +18,17 @@ Given a table containing information about bank deposits and withdrawals made us
 |125|101|5.00|Withdrawal|
 |126|201|20.00|Deposit|
 |128|201|10.00|Withdrawal|
+
+# Respuesta
+
+```sql
+SELECT 
+  account_id,
+  -- Si está deposito lo suma y en caso que esté otra cosa lo resta (como solo tenemos dos posibilidades hacemos esto)
+  SUM(CASE
+    WHEN transaction_type = 'Deposit' THEN amount ELSE -amount END) AS balance
+FROM transactions
+GROUP BY
+  account_id
+
+```
