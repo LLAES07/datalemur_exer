@@ -21,3 +21,31 @@ P.S. If you've read the [Ace the Data Science Interview](https://amzn.to/3kF79F
 |5293|362|06/18/2022 00:00:00|50001|3|
 |6352|192|07/26/2022 00:00:00|69852|3|
 |4517|981|07/05/2022 00:00:00|69852|2|
+
+
+# Respuesta
+
+```sql
+
+-- AVG START RATING POR CADA PRODUCTO AGRUPADO POR MES
+-- MONTH AS NUMERICAL, PRODUCT ID, AVERAGE REDONDEADO A 2 DECIMALES
+-- SORT MONTH AND THEN PRODUCT
+
+SELECT
+    -- Extrae los meses de forma numerica
+  EXTRACT(MONTH FROM submit_date ) as meses,
+  product_id,
+    -- Genera la agrupación para el promedio
+  ROUND(AVG(stars), 2) as avg_stars
+FROM reviews
+GROUP BY 
+    -- Agrupa primero por mes y después por producto
+  EXTRACT(MONTH FROM submit_date ),
+  product_id
+ORDER BY 
+    -- Ordena primero por mes y después por producto
+  meses,
+  product_id;
+
+
+```
