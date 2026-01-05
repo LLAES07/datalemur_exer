@@ -37,3 +37,31 @@ Definition:
 |6878|125|Confirmed|06/14/2022 00:00:00|
 |6997|433|Not Confirmed|07/09/2022 00:00:00|
 |7000|433|Confirmed|07/10/2022 00:00:00|
+
+
+```sql
+
+
+
+WITH confirmations AS (
+SELECT 
+  e.user_id,
+  e.signup_date,
+  t.action_date
+FROM emails e
+INNER JOIN texts t 
+  ON e.email_id = t.email_id
+WHERE t.signup_action = 'Confirmed' -- Solo usuarios que completaron el proceso
+)
+
+SELECT 
+  user_id
+FROM confirmations
+-- Filtramos La diferencia debe ser exactamente de 1 día (confirmado al día siguiente)
+WHERE EXTRACT(DAY FROM (action_date - signup_date)) = 1;
+  
+
+
+
+
+```
