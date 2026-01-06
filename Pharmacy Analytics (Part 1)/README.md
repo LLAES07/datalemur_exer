@@ -28,3 +28,17 @@ If you like this question, try out [Pharmacy Analytics (Part 2)](https://datale
 | 34             | 94698          | 600997.19       | 521182.16  | AstraZeneca      | Surmontil       |
 | 61             | 77023          | 500101.61       | 419174.97  | Biogen           | Varicose Relief |
 | 136            | 144814         | 1084258         | 1006447.73 | Biogen           | Burkhart        |
+
+
+```sql
+
+SELECT
+  drug,
+    -- Calcula profit
+  total_sales - cogs as profit
+FROM pharmacy_sales
+    -- Ordena por el profit
+ORDER BY 2 DESC
+LIMIT 3
+
+```
