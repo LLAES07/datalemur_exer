@@ -54,3 +54,35 @@ Assume that the table below displays all employees in the table:
 The output indicates that 191 employees did not run any queries, 46 employees ran exactly 1 unique queries, 12 employees ran 2 unique queries, and so on.
 
 The dataset you are querying against may have different input & output - **this is just an example**!
+
+
+# Respuesta
+
+
+```sql
+
+WITH cuenta AS (
+    SELECT
+        e.employee_id,
+        COUNT(q.query_id) AS total -- Cuenta solo registros existentes
+    FROM
+        queries q
+
+    LEFT JOIN employees e
+        AND q.query_starttime >= '2023-07-01' 
+        AND q.query_starttime < '2023-10-01'
+    GROUP BY e.employee_id
+
+)
+
+
+SELECT 
+  total,
+  COUNT(employee_id) AS employee_count
+FROM 
+    cuenta
+GROUP BY 
+    total
+ORDER BY 
+    total;
+```
