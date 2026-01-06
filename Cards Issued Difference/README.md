@@ -22,3 +22,39 @@ Write a query that outputs the name of each credit card and the difference in th
 | Chase Sapphire Reserve | 170000        | 1           | 2021       |
 | Chase Sapphire Reserve | 175000        | 2           | 2021       |
 | Chase Sapphire Reserve | 180000        | 3           | 2021       |
+
+
+# Respuesta
+
+
+```sql
+WITH ct1 AS (
+    -- Generando el total mensual para cada tarjeta según los meses
+  SELECT
+    card_name,
+    issue_month,
+    SUM(issued_amount) AS total_mensual
+  
+  FROM 
+    monthly_cards_issued
+  GROUP BY
+    card_name,
+    issue_month
+)
+
+
+SELECT
+  card_name,
+  -- Calculando la diferencia entre el mes más alto y el más bajo
+  MAX(total_mensual) - MIN(total_mensual) AS difference
+
+FROM
+  ct1
+GROUP BY
+  card_name
+ORDER BY
+  -- ordenando por la diferencia
+  2 DESC
+
+
+```
