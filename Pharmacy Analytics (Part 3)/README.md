@@ -33,3 +33,18 @@ If you like this question, try out [Pharmacy Analytics (Part 4)](https://datale
 |---|---|
 |Biogen|$4 million|
 |Eli Lilly|$3 million|
+
+
+```sql
+SELECT
+  manufacturer,
+  CONCAT('$', ROUND(SUM(total_sales)/1000000, 0), ' million') as sales_mil
+FROM 
+  pharmacy_sales
+GROUP BY
+  manufacturer
+ORDER BY 
+  SUM(total_sales) DESC,
+  manufacturer ASC;
+
+```
