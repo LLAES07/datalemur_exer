@@ -33,3 +33,35 @@ If you like this question, try out [Pharmacy Analytics (Part 3)](https://datale
 |Biogen|1|297324.73|
 |AbbVie|1|221429.36|
 |Eli Lilly|1|221422.17|
+
+
+# Respuesta
+
+
+```sql
+
+WITH ct1 AS ( 
+  
+  -- Obteniendo la perdida total por cada producto 
+  SELECT
+    manufacturer,
+    total_sales - cogs as total_loss
+  FROM pharmacy_sales
+)
+
+SELECT
+  manufacturer,
+  COUNT(*) as drog_count,
+  ABS(SUM(total_loss)) as total
+FROM
+  ct1
+WHERE 
+  -- Condicion para solo dejar las perdias
+  total_loss < 0
+GROUP BY
+  -- Agrupando por el manufacturer para poder contar la cantidad de drogas por compañia que tuvieron perdidas
+  manufacturer
+ORDER BY
+  total DESC
+
+```
