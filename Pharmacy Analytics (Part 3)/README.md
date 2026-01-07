@@ -38,12 +38,14 @@ If you like this question, try out [Pharmacy Analytics (Part 4)](https://datale
 ```sql
 SELECT
   manufacturer,
+    -- Realiza el calculo del total de ventas y divide en 1 millon para poder pasar a la notación requerida
   CONCAT('$', ROUND(SUM(total_sales)/1000000, 0), ' million') as sales_mil
 FROM 
   pharmacy_sales
 GROUP BY
   manufacturer
 ORDER BY 
+    -- Para ordenar de mayor a menor
   SUM(total_sales) DESC,
   manufacturer ASC;
 
