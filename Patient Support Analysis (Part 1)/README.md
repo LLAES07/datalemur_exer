@@ -23,3 +23,21 @@ If you like this question, try out [Patient Support Analysis (Part 2)](https://
 |2|9b1af84b-eedb-4c21-9730-6f099cc2cc5e|claims assistance|2023-01-26T01:21:27Z|992|
 |2|8471a3d4-6fc7-4bb2-9fc7-4583e3638a9e|emergency assistance|2023-03-09T10:58:54Z|128|
 |2|38208fae-bad0-49bf-99aa-7842ba2e37bc|benefits|2023-06-05T07:35:43Z|619|
+
+
+# Respuesta
+
+```sql
+
+
+SELECT
+  COUNT(policy_holder_id) AS policy_holder_count
+FROM (  -- Consulta interna que expone cuantos  holder id tineen mas de 3 casos
+        SELECT 
+            policy_holder_id
+        FROM callers 
+        GROUP BY policy_holder_id
+        HAVING COUNT(DISTINCT case_id) >=3
+    ) AS t1
+
+```
