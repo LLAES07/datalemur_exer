@@ -44,3 +44,36 @@ _As of June 18th, we have removed the requirement for unique salaries and revise
 | ------------- | --------------- |
 | 1             | Data Analytics  |
 | 2             | Data Science    |
+
+
+# Respuesta
+
+```sql
+WITH salary_rank AS (
+    -- Genera un rankin para cada departamento de los trabajdores segun su salario
+    SELECT 
+    *,
+    DENSE_RANK() OVER(PARTITION BY department_id ORDER BY salary DESC) as ranking
+    FROM employee 
+)
+
+-- Consulta final que une ambas tablas y usa los tops 3 de cada departamento
+SELECT
+  department_name,
+  name,
+  salary
+
+FROM
+  salary_rank s
+INNER JOIN
+  department d 
+  
+ON 
+  s.department_id = d.department_id
+WHERE
+  ranking <=3
+ORDER BY  
+  department_name asc, salary DESC, NAME ASC
+
+
+```
