@@ -19,3 +19,31 @@ Assume you are given the table below on Uber transactions made by users. Write a
 | 121         | 36.00     | 01/18/2022 12:00:00  |
 | 145         | 24.99     | 01/26/2022 12:00:00  |
 | 111         | 89.60     | 02/05/2022 12:00:00  |
+
+# Respuesta
+
+```sql
+
+WITH t1 AS (
+    -- Tabla para general el ranking
+    SELECT
+    *,
+    -- Genera un raking ordenado según la id y fecha de transacción
+    ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY transaction_date ASC) AS ranking
+    FROM transactions 
+)
+
+SELECT
+    -- Consulta final donde solo se escogen la tercera transacción
+  user_id,
+  spend,
+  transaction_date
+FROM
+  t1
+WHERE
+    -- filtra solo la tercera transacción de cada usuario
+  ranking =3
+
+
+
+```
