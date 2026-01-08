@@ -19,3 +19,22 @@ It's possible that multiple employees may share the same second highest salary. 
 | 1           | Emma Thompson    | 3800   | 1             | 6          |
 | 2           | Daniel Rodriguez | 2230   | 1             | 7          |
 | 3           | Olivia Smith     | 2000   | 1             | 8          |
+
+
+# RESPUESTA
+
+```sql
+
+SELECT
+  salary
+
+FROM (  -- Genera un ranking para posteriormente ser filtrado el segundo
+        SELECT 
+            *,
+            DENSE_RANK() OVER(ORDER BY salary DESC) AS ranking
+        FROM employee
+        LIMIT 5) AS t1
+WHERE
+  ranking=2
+
+```
