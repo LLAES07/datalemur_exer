@@ -24,3 +24,22 @@ Definition and note:
 | 123    | click      | 07/18/2022 11:37:42 |
 | 234    | impression | 07/18/2022 14:15:12 |
 | 234    | click      | 07/18/2022 14:16:12 |
+
+
+# Respuesta
+
+
+```sql
+
+SELECT
+  app_id,
+  ROUND(100.0 *
+    -- Cuando el evento es click 1 y cuando es impression 1 y se cuenta cuantos hay
+    COUNT(CASE WHEN event_type = 'click' THEN 1 ELSE NULL END) /
+    COUNT(CASE WHEN event_type = 'impression' THEN 1 ELSE NULL END), 2)  AS ctr_rate
+FROM events
+WHERE
+  EXTRACT(YEAR FROM timestamp) ='2022'
+GROUP BY app_id;
+
+```
