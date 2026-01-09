@@ -26,3 +26,20 @@ _Effective April 7th, 2023, the problem statement, solution and hints for this q
 | 111     | 06/03/2022 00:00:00 | 3           |
 | 111     | 06/04/2022 00:00:00 | 4           |
 | 111     | 06/05/2022 00:00:00 | 5           |
+
+
+# Respuesta
+
+````sql
+
+SELECT
+    user_id,
+    tweet_date,
+    ROUND(AVG(tweet_count) OVER (PARTITION BY user_id
+        ORDER BY tweet_date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ), 2) AS moving_avg
+FROM tweets;
+
+
+```
