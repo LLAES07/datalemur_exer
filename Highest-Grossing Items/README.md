@@ -22,3 +22,45 @@ Assume you're given a table containing data on Amazon customers and their spendi
 |electronics|vacuum|178|152.00|04/05/2022 12:00:00|
 |electronics|wireless headset|156|249.90|07/08/2022 12:00:00|
 |electronics|vacuum|145|189.00|07/15/2022 12:00:00|
+
+
+# Respuesta
+
+ ````sql
+ 
+ WITH t1 as (
+    -- CT1: Genera el total de cada categoria por producto y filtra por el 2022
+    SELECT
+      category,
+      product,
+      SUM(spend) as total_spend
+    FROM product_spend
+    WHERE
+      EXTRACT(YEAR FROM transaction_date)='2022'
+    GROUP BY  
+      category,  
+      product
+),
+
+t2 AS (
+    -- CT2: Toma la tabla anterior y genera un ranking 
+    SELECT
+      category,
+      product,
+      total_spend,
+      DENSE_RANK() OVER(PARTITION BY category ORDER BY total_spend DESC) AS rnk
+    FROM
+      t1 
+)
+
+-- Consulta final toma los rankinks <= 2 por cada categoria y producto
+SELECT
+  category,
+  product,
+  total_spend
+FROM
+ t2
+WHERE
+  rnk <=2
+
+ ```
