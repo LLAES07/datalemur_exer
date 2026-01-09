@@ -43,3 +43,46 @@ Definitions:
 | 695         | 4520        | 08/04/2022 08:00:00 |
 | 125         | 9630        | 08/04/2022 16:00:00 |
 | 695         | 9852        | 08/07/2022 12:00:00 |
+
+
+# RESPUESTA
+
+
+```sql
+
+WITH ct1 AS (
+
+    -- Filtra la tabla weekly por la fecha y cuenta para posteriormente unirla con la tabla historica 
+    SELECT
+      user_id,
+      song_id,
+      COUNT(listen_time) as cuenta
+      
+    FROM
+      songs_weekly
+    WHERE
+      listen_time <='2022-08-05'
+    GROUP BY
+      user_id,
+      song_id
+    UNION ALL
+    SELECT
+      user_id,song_id, song_plays
+    FROM
+      songs_history
+)
+
+-- Consulta final donde suma por user_id y song_id
+SELECT
+  user_id,
+  song_id,
+  SUM(cuenta) as total
+FROM
+  ct1
+GROUP BY
+  user_id,
+  song_id
+ORDER BY 3 DESC
+  
+
+```
