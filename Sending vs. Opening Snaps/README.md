@@ -47,3 +47,28 @@ _Effective April 15th, 2023, the solution has been updated and optimised._
 |123|31-35|
 |456|26-30|
 |789|21-25|
+
+
+````sql
+WITH totals AS (
+    SELECT
+        b.age_bucket,
+        SUM(CASE WHEN activity_type = 'open' THEN time_spent ELSE 0 END) +
+        SUM(CASE WHEN activity_type = 'send' THEN time_spent ELSE 0 END) AS opening_time
+    FROM activities a
+    INNER JOIN age_breakdown b ON a.user_id = b.user_id
+    GROUP BY b.age_bucket
+)
+SELECT
+    b.age_bucket,
+    ROUND(100.0 * SUM(CASE WHEN activity_type = 'send' THEN time_spent ELSE 0 END) / t.opening_time, 2) AS send_percentage,
+    ROUND(100.0 * SUM(CASE WHEN activity_type = 'open' THEN time_spent ELSE 0 END) / t.opening_time, 2) AS open_percentage
+FROM activities a
+INNER JOIN age_breakdown b ON a.user_id = b.user_id
+INNER JOIN totals t ON t.age_bucket = b.age_bucket
+GROUP BY b.age_bucket, t.opening_time
+ORDER BY age_bucket
+
+
+
+```
