@@ -35,6 +35,7 @@ _Effective April 7th, 2023, the problem statement, solution and hints for this q
 SELECT
     user_id,
     tweet_date,
+    -- Calcula el promedio movil de 3 días
     ROUND(AVG(tweet_count) OVER (PARTITION BY user_id
         ORDER BY tweet_date
         ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
