@@ -22,3 +22,26 @@ Write a query that outputs the name of the credit card, and how many cards were 
 | 3           | 2021       | Chase Sapphire Reserve | 180000        |
 | 3           | 2021       | Chase Freedom Flex     | 65000         |
 | 4           | 2021       | Chase Freedom Flex     | 70000         |
+
+
+# Respuesta
+
+````sql
+
+SELECT
+  card_name,
+  issued_amount
+FROM (
+SELECT
+  *,
+  RANK() OVER(PARTITION BY card_name ORDER BY issue_year ASC, issue_month ASC) AS ranking
+FROM
+  monthly_cards_issued ) AS t1
+  
+WHERE 
+  ranking=1
+ORDER BY
+  issued_amount DESC
+  
+
+```
