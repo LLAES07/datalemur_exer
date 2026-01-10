@@ -31,12 +31,12 @@ Write a query that outputs the name of the credit card, and how many cards were 
 SELECT
   card_name,
   issued_amount
-FROM (
-SELECT
-  *,
-  RANK() OVER(PARTITION BY card_name ORDER BY issue_year ASC, issue_month ASC) AS ranking
-FROM
-  monthly_cards_issued ) AS t1
+FROM (  -- Subquery que hace un ranking segun la tarjeta y ordena primero segun año y despues según mes
+        SELECT
+        *,
+        RANK() OVER(PARTITION BY card_name ORDER BY issue_year ASC, issue_month ASC) AS ranking
+        FROM
+        monthly_cards_issued ) AS t1
   
 WHERE 
   ranking=1
