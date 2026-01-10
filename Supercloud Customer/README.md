@@ -38,3 +38,23 @@ Write a query that identifies the customer IDs of these Supercloud customers.
 | 5          | Containers       | Azure Service Fabric     |
 | 6          | Compute          | Virtual Machines         |
 | 7          | Compute          | Azure Functions          |
+
+
+# Respuesta
+
+```sql
+
+
+SELECT
+    c.customer_id
+
+FROM
+    customer_contracts c
+    INNER JOIN products p ON c.product_id = p.product_id
+GROUP BY
+    c.customer_id
+HAVING COUNT(DISTINCT p.product_category ) = (SELECT COUNT(DISTINCT product_category) FROM products)
+
+
+
+```
