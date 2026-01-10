@@ -53,6 +53,7 @@ FROM
     INNER JOIN products p ON c.product_id = p.product_id
 GROUP BY
     c.customer_id
+    -- Aqui utilizamos Having con un count para cuando se agrupe cuente para cada usuario cuantas categorias distintas tiene y si son iguales a la cantidad total de categorias entonces es un Supercloud y devolvemos su id.
 HAVING COUNT(DISTINCT p.product_category ) = (SELECT COUNT(DISTINCT product_category) FROM products)
 
 
