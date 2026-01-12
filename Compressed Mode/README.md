@@ -22,3 +22,17 @@ _Effective June 14th, 2023, the problem statement has been revised and additiona
 |1|500|
 |2|1000|
 |3|800|
+
+```sql
+
+SELECT 
+    item_count
+FROM items_per_order
+WHERE order_occurrences = (
+    -- Subquery para encontrar la maxima ocurrencia de item_count
+    SELECT MAX(order_occurrences) 
+    FROM items_per_order
+)
+ORDER BY item_count ASC;
+
+```
