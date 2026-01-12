@@ -25,4 +25,35 @@ Note that the table below displays randomly selected AAPL data.
 | 02/28/2023 00:00:00 | AAPL   | 146.83 | 147.05 | 149.08 | 147.41 |
 | 03/31/2023 00:00:00 | AAPL   | 161.91 | 162.44 | 165.00 | 164.90 |
 | 04/30/2023 00:00:00 | AAPL   | 167.88 | 168.49 | 169.85 | 169.68 |
-| 05/31/2023 00:00:00 | AAPL   | 176.76 | 177.33 | 179.35 | 177.25 |
+| 05/31/2023 00:00:00 | AAPL   | 176.76 | 177.33 | 179.35 | 177.25
+
+
+```sql
+
+WITH t1 AS (
+    SELECT 
+        ticker, 
+        open, 
+        TO_CHAR(date, 'Mon-YYYY') AS fecha
+    FROM stock_prices
+),
+T3 AS (
+    SELECT
+        ticker,
+        fecha,
+        open,
+        DENSE_RANK() OVER(PARTITION BY ticker ORDER BY open DESC) AS h_open_rank,
+        DENSE_RANK() OVER(PARTITION BY ticker ORDER BY open ASC) AS l_open_rank
+    FROM t1
+)
+SELECT
+    high.ticker,
+    high.fecha AS highest_mth,
+    high.open AS highest_open,
+    low.fecha AS lowest_mth,
+    low.open AS lowest_open
+FROM (SELECT * FROM T3 WHERE h_open_rank = 1) high
+JOIN (SELECT * FROM T3 WHERE l_open_rank = 1) low 
+  ON high.ticker = low.ticker
+ORDER BY high.ticker;
+```
