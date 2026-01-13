@@ -104,3 +104,23 @@ INNER JOIN
 
 
 ```
+
+# Respuesta 2
+
+Después de mirar el problema nuevamente me di cuenta que la solución era más facil que lo que hice y con un doble join en la misma tabla lo podia haber solucionado
+
+
+````sql
+
+
+SELECT
+    ROUND(
+    100.0 * SUM(CASE WHEN p1.country_id <> p2.country_id THEN 1 ELSE 0 END) / COUNT(*), 1) AS international_calls_pct
+
+FROM
+    phone_calls c
+INNER JOIN phone_info p1 ON c.caller_id = p1.caller_id
+INNER JOIN phone_info p2 ON c.receiver_id = p2.caller
+
+
+```
