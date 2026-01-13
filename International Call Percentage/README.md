@@ -42,3 +42,65 @@ Assumption:
 |4|US|Verizon|+1-415-224-6663|
 |5|IN|Vodafone|+91 7503-907302|
 |6|IN|Vodafone|+91 2287-664895|
+
+# Respuesta
+
+```sql
+
+WITH caller_countries AS (
+    SELECT
+      DISTINCT
+      c.caller_id,
+      i.country_id
+    
+    FROM phone_calls c
+    INNER JOIN 
+      phone_info i
+      ON  
+        c.caller_id = i.caller_id
+),
+
+reciver_countries AS (
+    
+    SELECT
+      DISTINCT
+      c.receiver_id as caller_id,
+      country_id
+    FROM phone_calls c
+    INNER JOIN 
+      phone_info i
+      ON  
+        c.receiver_id = i.caller_id
+    
+),
+
+all_countries AS (
+    SELECT
+    *
+    FROM 
+      caller_countries
+    UNION 
+    SELECT
+    *
+    FROM
+    reciver_countries
+    ORDER BY caller_id 
+)
+
+
+SELECT
+  ROUND(SUM(CASE WHEN
+        a.country_id != b.country_id THEN 1 ELSE 0 END)*100.0/(SELECT COUNT(*) FROM phone_calls ), 1)  AS total
+
+FROM phone_calls c
+INNER JOIN 
+  all_countries a
+  ON
+  c.caller_id = a.caller_id
+INNER JOIN
+  all_countries b 
+  ON
+  c.receiver_id = b.caller_id
+
+
+```
