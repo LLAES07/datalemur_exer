@@ -49,3 +49,12 @@ _Effective April 4th 2023, we added an assumption to the question to provide add
 'Confirmed' in `signup_action` means the user has activated their account and successfully completed the signup process.
 
 
+```sql
+
+SELECT 
+  ROUND(COUNT(DISTINCT t.email_id) * 1.0 / COUNT(DISTINCT e.email_id), 2) AS activation_rate
+FROM emails AS e
+LEFT JOIN texts AS t 
+  ON e.email_id = t.email_id 
+  AND t.signup_action = 'Confirmed';
+```
