@@ -22,3 +22,30 @@ Output the user's most recent transaction date, user ID, and the number of produ
 | 1467       | 115     | 19.90  | 07/08/2022 12:00:00 |
 | 2513       | 159     | 25.00  | 07/08/2022 12:00:00 |
 | 1452       | 159     | 74.50  | 07/10/2022 12:00:00 |
+
+
+# Respuesta
+
+```sql
+WITH ranking AS (
+  SELECT
+    *,
+    DENSE_RANK() OVER(PARTITION BY user_id ORDER BY transaction_date DESC) AS rk
+  
+  FROM
+    user_transactions
+)
+
+SELECT
+  transaction_date,
+  user_id,
+  COUNT(*) AS purchase_count
+FROM
+  ranking
+WHERE
+  rk = 1
+GROUP BY  
+  transaction_date,
+  user_id
+
+```
