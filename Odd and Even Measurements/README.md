@@ -27,3 +27,35 @@ _Effective April 15th, 2023, the question and solution for this question have be
 |523542|1246.24|07/10/2022 13:15:00|
 |143562|1124.50|07/11/2022 15:00:00|
 |346462|1234.14|07/11/2022 16:45:00|
+
+# Respuesta
+
+```sql
+
+WITH rank_measurement AS (
+
+  SELECT
+    *,
+    ROW_NUMBER() OVER(PARTITION BY 
+                  TO_CHAR(measurement_time, 'DD/MM/YYYY')::DATE
+                ORDER BY
+                  measurement_time ASC)
+  FROM measurements
+)
+
+SELECT
+  TO_CHAR(measurement_time, 'DD/MM/YYYY')::DATE AS measurement_day,
+  SUM(CASE
+          WHEN row_number % 2 = 0 THEN 0 ELSE measurement_value END) AS odd_sum,
+  SUM(CASE
+          WHEN row_number % 2 = 0 THEN measurement_value ELSE 0 END) AS even_sum
+
+FROM
+  rank_measurement
+GROUP BY
+  measurement_day
+  
+ORDER BY
+  measurement_day ASC
+
+```
