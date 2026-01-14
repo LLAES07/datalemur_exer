@@ -28,6 +28,8 @@ Output the user's most recent transaction date, user ID, and the number of produ
 
 ```sql
 WITH ranking AS (
+
+    -- Tabla temporal para rankear con dense rank asi las que tienen igual fecha tienen el mismo ranking
   SELECT
     *,
     DENSE_RANK() OVER(PARTITION BY user_id ORDER BY transaction_date DESC) AS rk
@@ -36,6 +38,7 @@ WITH ranking AS (
     user_transactions
 )
 
+-- Consulta final filtrando por los rankings 1 para todas las fechas
 SELECT
   transaction_date,
   user_id,
