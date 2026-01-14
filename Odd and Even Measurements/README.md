@@ -33,7 +33,7 @@ _Effective April 15th, 2023, the question and solution for this question have be
 ```sql
 
 WITH rank_measurement AS (
-
+    -- Genera ranking usando la los dias mes y año ordenandolos por la hora
   SELECT
     *,
     ROW_NUMBER() OVER(PARTITION BY 
@@ -43,6 +43,7 @@ WITH rank_measurement AS (
   FROM measurements
 )
 
+-- Consulta final que suma según si son pares o impares
 SELECT
   TO_CHAR(measurement_time, 'DD/MM/YYYY')::DATE AS measurement_day,
   SUM(CASE
