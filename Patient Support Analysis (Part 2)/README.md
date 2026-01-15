@@ -24,3 +24,26 @@ Write a query to calculate the percentage of calls that cannot be categorised. R
 |2|9b1af84b-eedb-4c21-9730-6f099cc2cc5e|n/a|2023-01-26T01:21:27Z|992|
 |2|8471a3d4-6fc7-4bb2-9fc7-4583e3638a9e|emergency assistance|2023-03-09T10:58:54Z|128|
 |2|38208fae-bad0-49bf-99aa-7842ba2e37bc|benefits|2023-06-05T07:35:43Z|619|
+
+
+# Respuesta
+
+```sql
+
+WITH ct1 AS (
+  SELECT   
+    COUNT(DISTINCT case_id) as no_cat_total
+  FROM callers
+  WHERE
+    call_category IS NULL OR
+    call_category LIKE 'n/a'
+)
+
+
+SELECT
+  ROUND(
+    (SELECT no_cat_total FROM ct1)*100.0 / 
+    (SELECT COUNT(DISTINCT case_id) FROM callers),
+    1) AS call_no_cat_percent
+
+```
