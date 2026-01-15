@@ -31,6 +31,7 @@ Write a query to calculate the percentage of calls that cannot be categorised. R
 ```sql
 
 WITH ct1 AS (
+    -- Cuenta el total de llamadas sin categorias
   SELECT   
     COUNT(DISTINCT case_id) as no_cat_total
   FROM callers
@@ -39,7 +40,7 @@ WITH ct1 AS (
     call_category LIKE 'n/a'
 )
 
-
+-- Consulta final, toma el ct1 con el total de sin categorias para saber el porcentaje de llamadas sin categorias
 SELECT
   ROUND(
     (SELECT no_cat_total FROM ct1)*100.0 / 
