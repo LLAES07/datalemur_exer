@@ -30,6 +30,7 @@ Hint:
 
 ```sql
 WITH m AS (
+    -- Filtra por la actividad y agrupa por usuario y mes
   SELECT
     user_id,
     DATE_TRUNC('month', event_date) AS month_start
@@ -38,6 +39,7 @@ WITH m AS (
   GROUP BY user_id, DATE_TRUNC('month', event_date)
 ),
 active_in_july AS (
+    -- Filtra por el mes agrupa por usuario y cuenta  aquellos que tengan dos meses diferentes
   SELECT user_id
   FROM m
   WHERE month_start IN (DATE '2022-06-01', DATE '2022-07-01')
