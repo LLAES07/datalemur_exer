@@ -26,4 +26,25 @@ Using the transactions table, identify any payments made at the same merchant wi
 |4|102|2|300|09/25/2022 12:00:00|
 |6|102|2|400|09/25/2022 14:00:00|
 
-### Example Output:
+# Respuesta
+
+```sql
+WITH ordered AS (
+  SELECT
+    transaction_id,
+    merchant_id,
+    credit_card_id,
+    amount,
+    transaction_timestamp,
+    LAG(transaction_timestamp) OVER ( PARTITION BY merchant_id, credit_card_id, amount ORDER BY transaction_timestamp) AS prev_ts
+  FROM 
+    transactions
+)
+SELECT COUNT(*) AS repeated_payments
+FROM ordered
+WHERE prev_ts IS NOT NULL
+  AND transaction_timestamp - prev_ts <= INTERVAL '10 minutes';
+
+
+
+ ```
