@@ -36,12 +36,16 @@ WITH ordered AS (
     credit_card_id,
     amount,
     transaction_timestamp,
+    -- Lag para poder restar la transacción actual con la anterior (pone el valor de la fila 1 en la columna nueva pero en la fila 2)
     LAG(transaction_timestamp) OVER ( PARTITION BY merchant_id, credit_card_id, amount ORDER BY transaction_timestamp) AS prev_ts
   FROM 
     transactions
 )
+
+-- Cuenta el total de pagos repetidos
 SELECT COUNT(*) AS repeated_payments
 FROM ordered
+-- No puede ser nulo y la resta debe ser menor o igual a 10 min
 WHERE prev_ts IS NOT NULL
   AND transaction_timestamp - prev_ts <= INTERVAL '10 minutes';
 
