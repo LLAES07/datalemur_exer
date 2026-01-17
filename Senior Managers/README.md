@@ -32,11 +32,14 @@ Assumption:
 
 SELECT 
   managers.manager_name,
+  -- Cantidad de reportes directos
   COUNT(DISTINCT managers.emp_id) AS direct_reportees
 FROM 
     employees
+    -- Manageers de cada empleado
 JOIN employees AS managers
   ON employees.manager_id = managers.emp_id
+    -- Senior managers de cada manager
 JOIN employees AS senior_managers
   ON managers.manager_id = senior_managers.emp_id
 GROUP BY 
