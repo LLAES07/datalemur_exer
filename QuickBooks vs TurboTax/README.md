@@ -27,3 +27,17 @@ If you find this question interesting, you may also want to try a similar questi
 |8|3|3/11/2022|QuickBooks Desktop Pro|
 |9|4|4/15/2022|QuickBooks Online|
 
+
+# Respuesta
+
+
+```sql
+SELECT
+  SUM (CASE 
+    WHEN LOWER(product) LIKE 'turbotax%' THEN 1 ELSE 0 END) AS turbotax_total,
+  SUM (CASE 
+    WHEN LOWER(product) LIKE 'quickbooks%' THEN 1 ELSE 0 END) AS quickbooks_total
+FROM filed_taxes;
+
+
+```
