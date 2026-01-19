@@ -33,8 +33,10 @@ If you find this question interesting, you may also want to try a similar questi
 
 ```sql
 SELECT
+    -- Cantidad de turbo total
   SUM (CASE 
     WHEN LOWER(product) LIKE 'turbotax%' THEN 1 ELSE 0 END) AS turbotax_total,
+    -- Cantidad de quickbooks total
   SUM (CASE 
     WHEN LOWER(product) LIKE 'quickbooks%' THEN 1 ELSE 0 END) AS quickbooks_total
 FROM filed_taxes;
